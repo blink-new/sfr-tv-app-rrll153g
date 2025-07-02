@@ -16,22 +16,23 @@ import {
   PlusCircle, 
   Heart
 } from 'lucide-react-native';
+import { router } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 
 const menuItems = [
-  { id: 'replay', title: 'REPLAY', icon: Repeat },
-  { id: 'enregistrements', title: 'ENREGISTREMENTS', icon: Save },
-  { id: 'guide', title: 'GUIDE TV', icon: Tv },
-  { id: 'radios', title: 'RADIOS', icon: Radio },
-  { id: 'vod', title: 'MES VOD', icon: Film },
-  { id: 'recherche', title: 'RECHERCHE', icon: Search },
-  { id: 'enrichir', title: 'ENRICHIR MON OFFRE', icon: PlusCircle },
-  { id: 'mediacenter', title: 'MEDIA CENTER', icon: MonitorPlay },
-  { id: 'navigateur', title: 'NAVIGATEUR', icon: Globe },
-  { id: 'astuces', title: 'ASTUCES', icon: HelpCircle },
-  { id: 'diagnostics', title: 'DIAGNOSTICS', icon: Heart },
-  { id: 'reglages', title: 'RÉGLAGES', icon: Settings, active: true },
+  { id: 'replay', title: 'REPLAY', icon: Repeat, route: '' },
+  { id: 'enregistrements', title: 'ENREGISTREMENTS', icon: Save, route: '' },
+  { id: 'guide', title: 'GUIDE TV', icon: Tv, route: 'guide' },
+  { id: 'radios', title: 'RADIOS', icon: Radio, route: '' },
+  { id: 'vod', title: 'MES VOD', icon: Film, route: '' },
+  { id: 'recherche', title: 'RECHERCHE', icon: Search, route: 'search_screen' },
+  { id: 'enrichir', title: 'ENRICHIR MON OFFRE', icon: PlusCircle, route: '' },
+  { id: 'mediacenter', title: 'MEDIA CENTER', icon: MonitorPlay, route: '' },
+  { id: 'navigateur', title: 'NAVIGATEUR', icon: Globe, route: '' },
+  { id: 'astuces', title: 'ASTUCES', icon: HelpCircle, route: '' },
+  { id: 'diagnostics', title: 'DIAGNOSTICS', icon: Heart, route: '' },
+  { id: 'reglages', title: 'RÉGLAGES', icon: Settings, active: true, route: '' },
 ];
 
 const featuredContent = [
@@ -68,7 +69,10 @@ export default function Home() {
   }, []);
 
   const renderMenuItem = ({ item }: { item: typeof menuItems[0] }) => (
-    <TouchableOpacity style={[styles.menuItem, item.active && styles.menuItemActive]}>
+    <TouchableOpacity 
+      style={[styles.menuItem, item.active && styles.menuItemActive]}
+      onPress={() => item.route && router.push(item.route)}
+    >
       <item.icon color={item.active ? '#fff' : '#000'} size={32} />
       <Text style={[styles.menuItemText, item.active && styles.menuItemTextActive]}>{item.title}</Text>
     </TouchableOpacity>
