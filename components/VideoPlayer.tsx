@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, AlertTriangle } from 'lucide-react-native';
@@ -8,15 +8,31 @@ interface VideoPlayerProps {
 }
 
 export default function VideoPlayer({ source }: VideoPlayerProps) {
-  const player = useVideoPlayer(source);
+  const transformedSource = useMemo(() => {
+    if (Platform.OS === 'web') {
+      // Mixed-content fix: browsers block http streams when site is https. Use corsproxy.io to upgrade.
+      if (source.startsWith('http://')) {
+        return `https://corsproxy.io/${source}`;
+      }
+    }
+    return source;
+  }, [source]);
+
+  const player = useVideoPlayer(transformedSource);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (player) {
+      // On web, most browsers block autoplay with sound. Start muted to comply with autoplay policies.
+      if (Platform.OS === 'web') {
+        player.muted = true;
+      }
       player.play();
       player.loop = true;
-      player.muted = false;
+      if (Platform.OS !== 'web') {
+        player.muted = false;
+      }
       player.volume = 1.0;
 
       const subscription = player.addListener((event) => {
@@ -58,6 +74,8 @@ export default function VideoPlayer({ source }: VideoPlayerProps) {
         style={styles.video}
         player={player}
         contentFit="contain"
+        // Enable CORS fetching for remote HLS playlists when running on web
+        crossOrigin={Platform.OS === 'web' ? 'anonymous' : undefined}
       />
 
       {!player?.isLoaded && !error && (
