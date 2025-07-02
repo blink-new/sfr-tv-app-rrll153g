@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, ImageBackground } from 'react-native';
-import VideoPlayer from '@/components/VideoPlayer';
 import { BlurView } from 'expo-blur';
 import { 
   Tv, 
@@ -23,7 +22,7 @@ const { width, height } = Dimensions.get('window');
 const menuItems = [
   { id: 'replay', title: 'REPLAY', icon: Repeat, route: '' },
   { id: 'enregistrements', title: 'ENREGISTREMENTS', icon: Save, route: '' },
-  { id: 'guide', title: 'GUIDE TV', icon: Tv, route: 'guide' },
+  { id: 'guide', title: 'GUIDE TV', icon: Tv, route: 'livetv' },
   { id: 'radios', title: 'RADIOS', icon: Radio, route: '' },
   { id: 'vod', title: 'MES VOD', icon: Film, route: '' },
   { id: 'recherche', title: 'RECHERCHE', icon: Search, route: 'search_screen' },
@@ -116,21 +115,7 @@ const channels = [
 ];
 
 export default function Home() {
-  const video = useRef(null);
-  const [status, setStatus] = useState({});
   const [currentTime, setCurrentTime] = useState('');
-  const [currentChannel, setCurrentChannel] = useState(channels[0]);
-  const params = useLocalSearchParams();
-
-  useEffect(() => {
-    if (params.streamUrl && params.channelLogo) {
-      setCurrentChannel({
-        ...currentChannel,
-        streamUrl: params.streamUrl as string,
-        logo: params.channelLogo as string,
-      });
-    }
-  }, [params.streamUrl, params.channelLogo]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -171,9 +156,9 @@ export default function Home() {
 
       <View style={styles.mainContent}>
         <View style={styles.playerContainer}>
-          <VideoPlayer source={currentChannel.streamUrl} />
+          <Image source={{ uri: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=450&fit=crop' }} style={styles.video} />
           <View style={styles.videoOverlay}>
-            <Image source={{ uri: currentChannel.logo }} style={styles.channelLogo} />
+            <Image source={{ uri: 'https://i.imgur.com/O8iK3Sj.png' }} style={styles.channelLogo} />
             <View style={styles.videoTextContainer}>
                 <Text style={styles.videoTextTitle}>BIENTÔT</Text>
                 <Text style={styles.videoTextSubtitle}>LE MEILLEUR DU SPORT AVEC LA QUALITÉ 4K</Text>
@@ -257,8 +242,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   playerContainer: {
-    width: width * 0.4,
-    height: height * 0.4,
+    width: 200,
+    height: 200,
     backgroundColor: '#000',
     borderRadius: 10,
     overflow: 'hidden',
@@ -310,7 +295,7 @@ const styles = StyleSheet.create({
   },
   featuredContainer: {
     flex: 1,
-    height: height * 0.4,
+    height: 200,
     justifyContent: 'space-between',
   },
   featuredItem: {
@@ -353,7 +338,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   menuItem: {
-    width: (width - 100) / 6 - 10,
+    width: (200 - 100) / 6 - 10,
     height: 100,
     backgroundColor: 'rgba(255,255,255,0.2)',
     borderRadius: 10,

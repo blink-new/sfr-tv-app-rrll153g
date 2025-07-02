@@ -8,6 +8,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="guide" />
         <Stack.Screen name="search_screen" />
+        <Stack.Screen name="livetv" />
       </Stack>
       <StatusBar style="light" />
     </>
