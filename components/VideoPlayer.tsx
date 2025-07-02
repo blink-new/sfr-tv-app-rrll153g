@@ -1,74 +1,66 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, AlertTriangle, MonitorPlay } from 'lucide-react-native';
+import { VideoView, useVideoPlayer } from 'expo-video';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, AlertTriangle } from 'lucide-react-native';
 
 interface VideoPlayerProps {
   source: string;
 }
 
 export default function VideoPlayer({ source }: VideoPlayerProps) {
-  const video = useRef<Video>(null);
-  const [status, setStatus] = useState<any>({});
+  const player = useVideoPlayer(source);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (Platform.OS === 'web') {
-    return (
-      <View style={styles.webFallback}>
-        <MonitorPlay color="#ff6b35" size={48} />
-        <Text style={styles.webFallbackTitle}>Lecture non supportée sur le web</Text>
-        <Text style={styles.webFallbackText}>La lecture de flux IPTV en direct n'est pas supportée dans la version web de cette app.<br/>Essayez sur un appareil mobile ou une TV connectée.</Text>
-      </View>
-    );
-  }
+  useEffect(() => {
+    if (player) {
+      player.play();
+      player.loop = true;
+      player.muted = false;
+      player.volume = 1.0;
+
+      const subscription = player.addListener((event) => {
+        if (event.state === 'error') {
+          setError(`Playback Error: ${event.error}`);
+        } else if (event.state === 'ready') {
+          setError(null);
+        }
+      });
+
+      return () => {
+        subscription.remove();
+        player.pause();
+      };
+    }
+  }, [player, source]);
 
   const togglePlayPause = () => {
-    if (video.current) {
-      status.isPlaying ? video.current.pauseAsync() : video.current.playAsync();
+    if (player) {
+      player.paused ? player.play() : player.pause();
     }
   };
 
   const toggleMute = () => {
-    if (video.current) {
-      status.isMuted ? video.current.setIsMutedAsync(false) : video.current.setIsMutedAsync(true);
+    if (player) {
+      player.muted = !player.muted;
     }
   };
 
-  const toggleFullScreen = async () => {
-    if (!video.current) return;
-
-    if (isFullScreen) {
-      await video.current.dismissFullscreenPlayer();
-    } else {
-      await video.current.presentFullscreenPlayer();
-    }
+  const toggleFullScreen = () => {
+    // Fullscreen functionality for VideoView is typically handled by the component itself
+    // or requires native module integration. For now, we'll just toggle a state.
     setIsFullScreen(!isFullScreen);
-  };
-
-  const handlePlaybackStatusUpdate = (newStatus: any) => {
-    setStatus(newStatus);
-    if (newStatus.error) {
-      setError(`Playback Error: ${newStatus.error}`);
-    } else if (newStatus.didJustFinish) {
-      setError(null); // Clear error if playback finishes successfully
-    }
   };
 
   return (
     <View style={styles.container}>
-      <Video
-        ref={video}
+      <VideoView
         style={styles.video}
-        source={{ uri: source }}
-        useNativeControls={false}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-        onError={(e) => setError(`Video Error: ${e.message}`)}
+        player={player}
+        contentFit="contain"
       />
 
-      {!status.isLoaded && !error && (
+      {!player?.isLoaded && !error && (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator size="large" color="#ff6b35" />
           <Text style={styles.loadingText}>Loading stream...</Text>
@@ -84,13 +76,13 @@ export default function VideoPlayer({ source }: VideoPlayerProps) {
         </View>
       )}
 
-      {!error && status.isLoaded && (
+      {!error && player?.isLoaded && (
         <View style={styles.controlsOverlay}>
           <TouchableOpacity onPress={togglePlayPause} style={styles.controlButton}>
-            {status.isPlaying ? <Pause color="#fff" size={24} /> : <Play color="#fff" size={24} />}
+            {player?.paused ? <Play color="#fff" size={24} /> : <Pause color="#fff" size={24} />}
           </TouchableOpacity>
           <TouchableOpacity onPress={toggleMute} style={styles.controlButton}>
-            {status.isMuted ? <VolumeX color="#fff" size={24} /> : <Volume2 color="#fff" size={24} />}
+            {player?.muted ? <VolumeX color="#fff" size={24} /> : <Volume2 color="#fff" size={24} />}
           </TouchableOpacity>
           <TouchableOpacity onPress={toggleFullScreen} style={styles.controlButton}>
             {isFullScreen ? <Minimize color="#fff" size={24} /> : <Maximize color="#fff" size={24} />}
@@ -156,29 +148,5 @@ const styles = StyleSheet.create({
   },
   controlButton: {
     padding: 10,
-  },
-  webFallback: {
-    flex: 1,
-    backgroundColor: '#181818',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 16,
-    padding: 32,
-    minHeight: 200,
-  },
-  webFallbackTitle: {
-    color: '#ff6b35',
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 16,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  webFallbackText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 4,
-    opacity: 0.8,
   },
 });
