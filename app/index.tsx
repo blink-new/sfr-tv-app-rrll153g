@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, ImageBackground } from 'react-native';
-import { Video } from 'expo-av';
+import { VideoPlayer } from '@/components/VideoPlayer';
 import { BlurView } from 'expo-blur';
 import { 
   Tv, 
@@ -16,7 +16,7 @@ import {
   PlusCircle, 
   Heart
 } from 'lucide-react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 
@@ -31,8 +31,7 @@ const menuItems = [
   { id: 'mediacenter', title: 'MEDIA CENTER', icon: MonitorPlay, route: '' },
   { id: 'navigateur', title: 'NAVIGATEUR', icon: Globe, route: '' },
   { id: 'astuces', title: 'ASTUCES', icon: HelpCircle, route: '' },
-  { id: 'diagnostics', title: 'DIAGNOSTICS', icon: Heart, route: '' },
-  { id: 'reglages', title: 'RÉGLAGES', icon: Settings, active: true, route: '' },
+  { id: 'diagnostics', title: 'DIAGNOSTICS', icon: Heart, active: true, route: '' },
 ];
 
 const featuredContent = [
@@ -50,10 +49,67 @@ const featuredContent = [
   },
 ];
 
+const channels = [
+  {
+    id: 1,
+    name: 'TF1 FHD',
+    number: '1',
+    logo: 'https://i.imgur.com/O8iK3Sj.png',
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2650',
+  },
+  {
+    id: 2,
+    name: 'M6 FHD',
+    number: '6',
+    logo: 'https://i.imgur.com/O8iK3Sj.png',
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/1651',
+  },
+  {
+    id: 3,
+    name: 'W9 FHD',
+    number: '9',
+    logo: 'https://i.imgur.com/O8iK3Sj.png',
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/1641',
+  },
+  {
+    id: 4,
+    name: 'FRANCE 2 FHD',
+    number: '2',
+    logo: 'https://i.imgur.com/O8iK3Sj.png',
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2941',
+  },
+  {
+    id: 5,
+    name: 'FRANCE 4 FHD',
+    number: '4',
+    logo: 'https://i.imgur.com/O8iK3Sj.png',
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2912',
+  },
+  {
+    id: 6,
+    name: 'FRANCE 5 FHD',
+    number: '5',
+    logo: 'https://i.imgur.com/O8iK3Sj.png',
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2913',
+  },
+];
+
 export default function Home() {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [currentTime, setCurrentTime] = useState('');
+  const [currentChannel, setCurrentChannel] = useState(channels[0]);
+  const params = useLocalSearchParams();
+
+  useEffect(() => {
+    if (params.streamUrl && params.channelLogo) {
+      setCurrentChannel({
+        ...currentChannel,
+        streamUrl: params.streamUrl as string,
+        logo: params.channelLogo as string,
+      });
+    }
+  }, [params.streamUrl, params.channelLogo]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -94,20 +150,9 @@ export default function Home() {
 
       <View style={styles.mainContent}>
         <View style={styles.playerContainer}>
-          <Video
-            ref={video}
-            style={styles.video}
-            source={{
-              uri: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2650',
-            }}
-            useNativeControls={false}
-            resizeMode="cover"
-            isLooping
-            shouldPlay
-            onPlaybackStatusUpdate={status => setStatus(() => status)}
-          />
+          <VideoPlayer source={currentChannel.streamUrl} />
           <View style={styles.videoOverlay}>
-            <Image source={{ uri: 'https://i.imgur.com/O8iK3Sj.png' }} style={styles.channelLogo} />
+            <Image source={{ uri: currentChannel.logo }} style={styles.channelLogo} />
             <View style={styles.videoTextContainer}>
                 <Text style={styles.videoTextTitle}>BIENTÔT</Text>
                 <Text style={styles.videoTextSubtitle}>LE MEILLEUR DU SPORT AVEC LA QUALITÉ 4K</Text>

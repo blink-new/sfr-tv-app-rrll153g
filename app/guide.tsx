@@ -13,6 +13,7 @@ const channels = [
     category: 'news',
     isLive: true,
     isFavorite: false,
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2650',
     schedule: [
       { time: '20:00', title: 'Journal de 20h', duration: '30 min' },
       { time: '20:30', title: 'Météo', duration: '5 min' },
@@ -29,6 +30,7 @@ const channels = [
     category: 'series',
     isLive: true,
     isFavorite: true,
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2941',
     schedule: [
       { time: '19:55', title: 'Un si grand soleil', duration: '25 min' },
       { time: '20:20', title: 'Météo', duration: '5 min' },
@@ -45,6 +47,7 @@ const channels = [
     category: 'movies',
     isLive: true,
     isFavorite: false,
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/1651',
     schedule: [
       { time: '19:45', title: 'Le 19:45', duration: '20 min' },
       { time: '20:05', title: 'Scènes de ménages', duration: '25 min' },
@@ -61,6 +64,7 @@ const channels = [
     category: 'movies',
     isLive: true,
     isFavorite: true,
+    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/82',
     schedule: [
       { time: '20:00', title: 'Le Grand Journal', duration: '45 min' },
       { time: '20:45', title: 'Film: Inception', duration: '2h28' },
@@ -71,6 +75,12 @@ const channels = [
 
 export default function Guide() {
   const [selectedChannel, setSelectedChannel] = useState(channels[0]);
+
+  const handleChannelSelect = (channel: typeof channels[0]) => {
+    setSelectedChannel(channel);
+    router.setParams({ streamUrl: channel.streamUrl, channelLogo: channel.logo });
+    router.back();
+  };
 
   return (
     <View style={styles.container}>
@@ -94,7 +104,7 @@ export default function Guide() {
                   styles.channelListItem,
                   selectedChannel.id === channel.id && styles.channelListItemActive,
                 ]}
-                onPress={() => setSelectedChannel(channel)}
+                onPress={() => handleChannelSelect(channel)}
               >
                 <Image source={{ uri: channel.logo }} style={styles.channelListLogo} />
                 <View style={styles.channelListInfo}>
