@@ -16,6 +16,7 @@ import {
   Heart
 } from 'lucide-react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { channels } from '@/data/channels';
 
 const { width, height } = Dimensions.get('window');
 
@@ -45,72 +46,6 @@ const featuredContent = [
     title: 'Inédit TV',
     image: 'https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=800&h=450&fit=crop',
     logo: 'https://i.imgur.com/sX3a2yL.png'
-  },
-];
-
-const channels = [
-  {
-    id: 1,
-    name: 'TF1 FHD',
-    number: '1',
-    logo: 'https://i.imgur.com/O8iK3Sj.png',
-    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2650',
-  },
-  {
-    id: 2,
-    name: 'M6 FHD',
-    number: '6',
-    logo: 'https://i.imgur.com/O8iK3Sj.png',
-    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/1651',
-  },
-  {
-    id: 3,
-    name: 'W9 FHD',
-    number: '9',
-    logo: 'https://i.imgur.com/O8iK3Sj.png',
-    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/1641',
-  },
-  {
-    id: 4,
-    name: 'FRANCE 2 FHD',
-    number: '2',
-    logo: 'https://i.imgur.com/O8iK3Sj.png',
-    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2941',
-  },
-  {
-    id: 5,
-    name: 'FRANCE 4 FHD',
-    number: '4',
-    logo: 'https://i.imgur.com/O8iK3Sj.png',
-    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2912',
-  },
-  {
-    id: 6,
-    name: 'FRANCE 5 FHD',
-    number: '5',
-    logo: 'https://i.imgur.com/O8iK3Sj.png',
-    streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2913',
-  },
-  {
-    id: 7,
-    name: '2M',
-    number: '50',
-    logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/a/a3/Logo_2M.svg/1200px-Logo_2M.svg.png',
-    streamUrl: 'https://cdn-live.forja.ma/2m/2m.m3u8',
-  },
-  {
-    id: 8,
-    name: 'Al Aoula',
-    number: '51',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Al_Aoula_logo.svg/1200px-Al_Aoula_logo.svg.png',
-    streamUrl: 'https://cdn-live.forja.ma/alaoula/alaoula.m3u8',
-  },
-  {
-    id: 9,
-    name: 'Arryadia',
-    number: '52',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Arryadia_logo.svg/2560px-Arryadia_logo.svg.png',
-    streamUrl: 'https://cdn-live.forja.ma/arryadia/arryadia.m3u8',
   },
 ];
 

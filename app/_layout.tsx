@@ -6,7 +6,6 @@ export default function RootLayout() {
     <>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="guide" />
         <Stack.Screen name="search_screen" />
         <Stack.Screen name="livetv" />
       </Stack>
