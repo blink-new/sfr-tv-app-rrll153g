@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, AlertTriangle } from 'lucide-react-native';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, AlertTriangle, MonitorPlay } from 'lucide-react-native';
 
 interface VideoPlayerProps {
   source: string;
@@ -12,6 +12,16 @@ export default function VideoPlayer({ source }: VideoPlayerProps) {
   const [status, setStatus] = useState<any>({});
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  if (Platform.OS === 'web') {
+    return (
+      <View style={styles.webFallback}>
+        <MonitorPlay color="#ff6b35" size={48} />
+        <Text style={styles.webFallbackTitle}>Lecture non supportée sur le web</Text>
+        <Text style={styles.webFallbackText}>La lecture de flux IPTV en direct n'est pas supportée dans la version web de cette app.<br/>Essayez sur un appareil mobile ou une TV connectée.</Text>
+      </View>
+    );
+  }
 
   const togglePlayPause = () => {
     if (video.current) {
@@ -146,5 +156,29 @@ const styles = StyleSheet.create({
   },
   controlButton: {
     padding: 10,
+  },
+  webFallback: {
+    flex: 1,
+    backgroundColor: '#181818',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+    padding: 32,
+    minHeight: 200,
+  },
+  webFallbackTitle: {
+    color: '#ff6b35',
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 16,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  webFallbackText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 4,
+    opacity: 0.8,
   },
 });
