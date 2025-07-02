@@ -71,6 +71,57 @@ const channels = [
       { time: '23:15', title: 'Late Show', duration: '1h' },
     ]
   },
+  {
+    id: 7,
+    name: '2M',
+    number: '50',
+    logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/a/a3/Logo_2M.svg/1200px-Logo_2M.svg.png',
+    currentShow: 'Sabahiyat 2M',
+    category: 'news',
+    isLive: true,
+    isFavorite: false,
+    streamUrl: 'https://cdn-live.forja.ma/2m/2m.m3u8',
+    schedule: [
+      { time: '09:00', title: 'Sabahiyat 2M', duration: '2h' },
+      { time: '11:00', title: 'Info Soir', duration: '30 min' },
+      { time: '11:30', title: 'Ma Tensewnach', duration: '1h' },
+      { time: '12:30', title: 'Allo 2M', duration: '1h' },
+    ]
+  },
+  {
+    id: 8,
+    name: 'Al Aoula',
+    number: '51',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Al_Aoula_logo.svg/1200px-Al_Aoula_logo.svg.png',
+    currentShow: 'Journal Al Oula',
+    category: 'news',
+    isLive: true,
+    isFavorite: false,
+    streamUrl: 'https://cdn-live.forja.ma/alaoula/alaoula.m3u8',
+    schedule: [
+      { time: '12:00', title: 'Journal Al Oula', duration: '30 min' },
+      { time: '12:30', title: 'Amouddou', duration: '1h' },
+      { time: '13:30', title: 'Al Mousalsal', duration: '1h' },
+      { time: '14:30', title: 'Film Marocain', duration: '1h30' },
+    ]
+  },
+  {
+    id: 9,
+    name: 'Arryadia',
+    number: '52',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Arryadia_logo.svg/2560px-Arryadia_logo.svg.png',
+    currentShow: 'Botola Pro',
+    category: 'sports',
+    isLive: true,
+    isFavorite: false,
+    streamUrl: 'https://cdn-live.forja.ma/arryadia/arryadia.m3u8',
+    schedule: [
+      { time: '15:00', title: 'Botola Pro', duration: '2h' },
+      { time: '17:00', title: 'Studio Botola', duration: '1h' },
+      { time: '18:00', title: 'Al Mousalsal', duration: '1h' },
+      { time: '19:00', title: 'Journal Arryadia', duration: '30 min' },
+    ]
+  },
 ];
 
 export default function Guide() {

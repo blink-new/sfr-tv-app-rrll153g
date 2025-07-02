@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, ImageBackground } from 'react-native';
-import { VideoPlayer } from '@/components/VideoPlayer';
+-import { VideoPlayer } from '@/components/VideoPlayer';
++import VideoPlayer from '@/components/VideoPlayer';
 import { BlurView } from 'expo-blur';
 import { 
   Tv, 
@@ -91,6 +92,27 @@ const channels = [
     number: '5',
     logo: 'https://i.imgur.com/O8iK3Sj.png',
     streamUrl: 'http://goldtvhd.tv:8080/group-sky.ddns.net/sH6JbvQ67rxgfddfvvdfc/2913',
+  },
+  {
+    id: 7,
+    name: '2M',
+    number: '50',
+    logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/a/a3/Logo_2M.svg/1200px-Logo_2M.svg.png',
+    streamUrl: 'https://cdn-live.forja.ma/2m/2m.m3u8',
+  },
+  {
+    id: 8,
+    name: 'Al Aoula',
+    number: '51',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Al_Aoula_logo.svg/1200px-Al_Aoula_logo.svg.png',
+    streamUrl: 'https://cdn-live.forja.ma/alaoula/alaoula.m3u8',
+  },
+  {
+    id: 9,
+    name: 'Arryadia',
+    number: '52',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Arryadia_logo.svg/2560px-Arryadia_logo.svg.png',
+    streamUrl: 'https://cdn-live.forja.ma/arryadia/arryadia.m3u8',
   },
 ];
 
