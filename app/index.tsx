@@ -338,13 +338,13 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   menuItem: {
-    width: (200 - 100) / 6 - 10,
+    width: (width - 100) / 6 - 10,
     height: 100,
     backgroundColor: 'rgba(255,255,255,0.2)',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5,
+    margin: 8,
   },
   menuItemActive: {
     backgroundColor: '#cc0000',
