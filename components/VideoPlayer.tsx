@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import { Video } from 'expo-av';
 import { Play, Pause, Volume2, VolumeX, Maximize, Minimize } from 'lucide-react-native';
 
 interface VideoPlayerProps {
@@ -24,15 +24,15 @@ export default function VideoPlayer({ source }: VideoPlayerProps) {
     }
   };
 
-  const toggleFullScreen = () => {
-    if (video.current) {
-      if (isFullScreen) {
-        video.current.setStatusAsync({ resizeMode: ResizeMode.CONTAIN });
-      } else {
-        video.current.setStatusAsync({ resizeMode: ResizeMode.COVER });
-      }
-      setIsFullScreen(!isFullScreen);
+  const toggleFullScreen = async () => {
+    if (!video.current) return;
+
+    if (isFullScreen) {
+      await video.current.dismissFullscreenPlayer();
+    } else {
+      await video.current.presentFullscreenPlayer();
     }
+    setIsFullScreen(!isFullScreen);
   };
 
   return (
@@ -42,7 +42,6 @@ export default function VideoPlayer({ source }: VideoPlayerProps) {
         style={styles.video}
         source={{ uri: source }}
         useNativeControls={false}
-        resizeMode={ResizeMode.CONTAIN}
         isLooping
         onPlaybackStatusUpdate={setStatus}
       />

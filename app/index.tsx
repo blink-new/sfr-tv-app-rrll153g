@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, ImageBackground } from 'react-native';
--import { VideoPlayer } from '@/components/VideoPlayer';
-+import VideoPlayer from '@/components/VideoPlayer';
+import VideoPlayer from '@/components/VideoPlayer';
 import { BlurView } from 'expo-blur';
 import { 
   Tv, 
@@ -149,7 +148,7 @@ export default function Home() {
   const renderMenuItem = ({ item }: { item: typeof menuItems[0] }) => (
     <TouchableOpacity 
       style={[styles.menuItem, item.active && styles.menuItemActive]}
-      onPress={() => item.route && router.push(item.route)}
+      onPress={() => item.route && router.push(item.route as any)}
     >
       <item.icon color={item.active ? '#fff' : '#000'} size={32} />
       <Text style={[styles.menuItemText, item.active && styles.menuItemTextActive]}>{item.title}</Text>
